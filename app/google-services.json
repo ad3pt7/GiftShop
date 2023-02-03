@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "325935989502",
+    "firebase_url": "https://giftshop-4fa39-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "giftshop-4fa39",
+    "storage_bucket": "giftshop-4fa39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325935989502:android:09ad0a49cb32b33c70dbaf",
+        "android_client_info": {
+          "package_name": "com.example.giftshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325935989502-egniodd00jtclk7vuju9qtoc15nodtdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlS409N2xaB8AeZCDCw_CiEI6j4Bmdhc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325935989502-egniodd00jtclk7vuju9qtoc15nodtdg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
