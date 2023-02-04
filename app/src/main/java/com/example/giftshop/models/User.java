@@ -1,4 +1,4 @@
-package com.example.giftshop;
+package com.example.giftshop.models;
 
 public class User {
 

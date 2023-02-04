@@ -1,4 +1,4 @@
-package com.example.giftshop;
+package com.example.giftshop.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.giftshop.R;
+import com.example.giftshop.models.Product;
+
 import java.util.ArrayList;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
@@ -18,7 +21,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     private ArrayList<Product> products = new ArrayList<>();
     private onLikeClickListener onClickListener;
-    interface onLikeClickListener{
+    public interface onLikeClickListener{
         void onLikeClick(Product Product);
     }
 
