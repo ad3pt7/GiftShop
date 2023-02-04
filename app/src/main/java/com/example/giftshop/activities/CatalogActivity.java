@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.giftshop.databinding.ActivityCatalogBinding;
 import com.example.giftshop.models.Product;
 import com.example.giftshop.adapters.ProductsAdapter;
 import com.example.giftshop.R;
@@ -20,16 +21,16 @@ import java.util.ArrayList;
 
 public class CatalogActivity extends AppCompatActivity {
 
+    private ActivityCatalogBinding binding;
     ProductsAdapter adapter;
-    RecyclerView recyclerView;
     ArrayList<Product> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_catalog);
+        binding = ActivityCatalogBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         products = new ArrayList<>();
-        recyclerView = findViewById(R.id.productsRecyclerView);
         adapter = new ProductsAdapter();
         adapter.setOnClickListener(new ProductsAdapter.onLikeClickListener() {
             @Override
@@ -37,7 +38,7 @@ public class CatalogActivity extends AppCompatActivity {
                 onLikeProduct(product);
             }
         });
-        recyclerView.setAdapter(adapter);
+        binding.productsRecyclerView.setAdapter(adapter);
         getAllProducts();
         Log.d("firebase", String.valueOf(products.size()));
         Log.d("firebase", String.valueOf(products.size()));

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.giftshop.databinding.ActivityMainBinding;
 import com.example.giftshop.models.Product;
 import com.example.giftshop.R;
 import com.example.giftshop.models.User;
@@ -24,15 +25,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
     private DatabaseReference mDatabase;
     private DatabaseReference productsRef;
-    EditText userName, userPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initViews();
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         ArrayList<Product> products = new ArrayList<>();
@@ -42,11 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void initViews() {
-        userName = findViewById(R.id.editName);
-        userPassword = findViewById(R.id.editPassword);
-    }
-
     public void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
 
@@ -54,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAuthorization(View view) {
-        String login = userName.getText().toString();
-        String password = userPassword.getText().toString();
+        String login = binding.editName.getText().toString();
+        String password = binding.editPassword.getText().toString();
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
