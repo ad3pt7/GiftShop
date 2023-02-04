@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/productNameText"
+        android:id="@+id/textProductName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -39,7 +39,7 @@
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a felis nec augue dictum facilisis. Nulla et ex tincidunt, lobortis leo vel, egestas urna."
         app:layout_constraintEnd_toStartOf="@+id/textCountLikes"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/productNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/textProductName" />
 
     <TextView
         android:id="@+id/textCountLikes"
