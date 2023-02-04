@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         ArrayList<Product> products = new ArrayList<>();
-        //getAllProducts();
-        Intent intent = new Intent(this, CatalogActivity.class);
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
 
     }

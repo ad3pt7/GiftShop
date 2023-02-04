@@ -40,8 +40,7 @@ public class CatalogActivity extends AppCompatActivity {
         });
         binding.productsRecyclerView.setAdapter(adapter);
         getAllProducts();
-        Log.d("firebase", String.valueOf(products.size()));
-        Log.d("firebase", String.valueOf(products.size()));
+
 
     }
 

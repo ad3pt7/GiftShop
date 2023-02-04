@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.giftshop.R;
@@ -57,23 +58,21 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         final Boolean[] isLiked = {false};
         holder.name.setText(product.name);
         holder.description.setText(product.description);
-        holder.liked.setImageDrawable(ContextCompat.getDrawable(
-                holder.liked.getContext(),R.drawable.unliked));
         holder.productPhoto.setImageDrawable(ContextCompat.getDrawable(
                 holder.productPhoto.getContext(),R.drawable.iphone14));
         holder.likes.setText(String.valueOf(product.likes));
         holder.liked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isLiked[0]){
-                    holder.liked.setImageDrawable(ContextCompat.getDrawable(
-                            holder.liked.getContext(),R.drawable.liked));
+                if(!isLiked[0]){
+                    holder.liked.setColorFilter(R.color.red);
+                    Log.d("firebase","liked");
                 }else{
-                    holder.liked.setImageDrawable(ContextCompat.getDrawable(
-                            holder.liked.getContext(),R.drawable.unliked));
+                    holder.liked.clearColorFilter();
+                    Log.d("firebase","disliked");
                 }
                 isLiked[0] = !isLiked[0];
-                Log.d("firebase",product.toString());
+                Log.d("firebase", String.valueOf(isLiked[0]));
             }
         });
 
@@ -94,10 +93,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
             name =itemView.findViewById(R.id.productNameText);
-            description = itemView.findViewById(R.id.productDescription);
-            likes = itemView.findViewById(R.id.likesCount);
+            description = itemView.findViewById(R.id.textProductDescr);
+            likes = itemView.findViewById(R.id.textCountLikes);
             productPhoto = itemView.findViewById(R.id.imageView);
-            liked = itemView.findViewById(R.id.imageView2);
+            liked = itemView.findViewById(R.id.imageLike);
 
         }
     }

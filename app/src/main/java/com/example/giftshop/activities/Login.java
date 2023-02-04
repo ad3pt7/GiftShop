@@ -1,16 +1,24 @@
 package com.example.giftshop.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.giftshop.databinding.ActivityLoginBinding;
+import com.example.giftshop.models.User;
 import com.example.giftshop.utilities.Constants;
 import com.example.giftshop.utilities.PreferenceManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
 
@@ -27,6 +35,12 @@ public class Login extends AppCompatActivity {
             finish();
         }
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        binding.buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
         setContentView(binding.getRoot());
     }
 
@@ -39,7 +53,47 @@ public class Login extends AppCompatActivity {
     }
 
     private void signIn() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         loading(true);
+        String login = binding.inputEmail.getText().toString();
+        String password = binding.inputPassword.getText().toString();
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(!login.isEmpty() && !password.isEmpty())
+                {
+                    User user = snapshot.child(login).getValue(User.class);
+                    if(snapshot.child(login).exists())
+                    {
+                        Log.d("firebase",user.password + " : " + password);
+                        if(password.equals(user.password)){
+                            Toast.makeText(Login.this, "Авторизация успешна",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.d("firebase","test2");
+                        }else{
+                            Toast.makeText(Login.this, "Проверьте данные",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(Login.this, "Проверьте данные",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "Заполните поля",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                loading(false);
+            }
+        });
+        loading(false);
 //        FirebaseFirestore database = FirebaseFirestore.getInstance();
 //        database.collection(Constants.KEY_COLLECTION_USERS)
 //                .whereEqualTo(Constants.KEY_EMAIL, binding.inputEmail.getText().toString())
