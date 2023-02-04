@@ -12,7 +12,7 @@
         android:theme="@style/Theme.GiftShop"
         tools:targetApi="31">
         <activity
-            android:name=".Login"
+            android:name=".activities.Login"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
