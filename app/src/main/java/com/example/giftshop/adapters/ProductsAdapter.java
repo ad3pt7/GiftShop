@@ -93,11 +93,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
-            name =itemView.findViewById(R.id.productNameText);
-            description = itemView.findViewById(R.id.productDescription);
-            likes = itemView.findViewById(R.id.likesCount);
-            productPhoto = itemView.findViewById(R.id.imageView);
-            liked = itemView.findViewById(R.id.imageView2);
+//            name =itemView.findViewById(R.id.productNameText);
+//            description = itemView.findViewById(R.id.productDescription);
+//            likes = itemView.findViewById(R.id.likesCount);
+//            productPhoto = itemView.findViewById(R.id.imageView);
+//            liked = itemView.findViewById(R.id.imageView2);
 
         }
     }
