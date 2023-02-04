@@ -92,7 +92,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
-            name =itemView.findViewById(R.id.productNameText);
+            name =itemView.findViewById(R.id.textProductName);
             description = itemView.findViewById(R.id.textProductDescr);
             likes = itemView.findViewById(R.id.textCountLikes);
             productPhoto = itemView.findViewById(R.id.imageView);
