@@ -1,4 +1,4 @@
-package com.example.giftshop.activities.listeners;
+package com.example.giftshop.listeners;
 
 import com.example.giftshop.models.Product;
 

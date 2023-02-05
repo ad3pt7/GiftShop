@@ -6,10 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.giftshop.activities.listeners.LikeListener;
+import com.example.giftshop.listeners.LikeListener;
 import com.example.giftshop.databinding.CatalogItemBinding;
 import com.example.giftshop.models.Product;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
