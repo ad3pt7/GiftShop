@@ -56,9 +56,12 @@ public class ProductsAdapterr  extends  RecyclerView.Adapter<ProductsAdapterr.Pr
             binding.textProductName.setText(product.name);
             binding.textProductDescr.setText(product.description);
             binding.textCountLikes.setText(String.valueOf(product.likes));
-            binding.getRoot().setOnClickListener(v -> likeListener.onLikeClicked(product));
+            binding.getRoot().setOnClickListener(v -> likeListener.onLikeClicked(v, product));
         }
     }
+
+    void onLikeClicked() {}
+
 
 
 }

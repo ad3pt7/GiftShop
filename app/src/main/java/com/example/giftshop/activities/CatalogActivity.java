@@ -95,7 +95,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
     }
 
     @Override
-    public void onLikeClicked(Product product) {
-        // listener code
+    public void onLikeClicked(View view, Product product) {
+
     }
 }
