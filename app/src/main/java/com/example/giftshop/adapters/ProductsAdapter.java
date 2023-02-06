@@ -82,7 +82,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.description.setText(product.description);
         holder.productPhoto.setImageDrawable(ContextCompat.getDrawable(
                 holder.productPhoto.getContext(),R.drawable.iphone14));
-        holder.likes.setText(String.valueOf(product.likes));
 
         for(ProductsLikes like : Database.getInstance().getProductsLikes())
         {
@@ -102,18 +101,25 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             @Override
             public void onClick(View view) {
                 if(!isLiked[0]){
+                    //isLiked[0] = !isLiked[0];
+                    product.likes++;
                     holder.liked.setColorFilter(R.color.red);
                     onProductLike(product);
                     //Log.d("firebase","liked");
                 }else{
+                    //isLiked[0] = !isLiked[0];
+                    product.likes--;
                     holder.liked.clearColorFilter();
                     onProductDislike(product);
                     //Log.d("firebase","disliked");
                 }
+                Log.d("firebase", String.valueOf(isLiked[0]));
                 isLiked[0] = !isLiked[0];
+                Log.d("firebase", String.valueOf(isLiked[0]));
                 //Log.d("firebase", String.valueOf(isLiked[0]));
             }
         });
+        holder.likes.setText(String.valueOf(product.likes));
 
     }
 
@@ -143,19 +149,24 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public void onProductLike(Product product)
     {
         DatabaseReference ref = FirebaseDatabase.getInstance().
-                getReference().child("productsLikes");
+                getReference();
         String uniqueID = UUID.randomUUID().toString();
         ProductsLikes like = new ProductsLikes(uniqueID,product.id,id);
-        ref.child(uniqueID).setValue(like);
+        ref.child("productsLikes").child(uniqueID).setValue(like);
         product.likeName = uniqueID;
+        //product.likes++;
+        ref.child("products").child(product.name).
+                child("likes").setValue(product.likes);
+        //this.notifyDataSetChanged();
 
     }
 
     public void onProductDislike(Product product)
     {
         DatabaseReference ref = FirebaseDatabase.getInstance().
-                getReference().child("productsLikes");
-        ref.child(product.likeName).addValueEventListener(new ValueEventListener() {
+                getReference();
+        ref.child("productsLikes").child(product.likeName).
+                addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
@@ -166,7 +177,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
             }
         });
+        //product.likes--;
+        ref.child("products").child(product.name).
+                child("likes").setValue(product.likes);
         Log.d("firebase",product.likeName);
+        //this.notifyDataSetChanged();
     }
 }
 

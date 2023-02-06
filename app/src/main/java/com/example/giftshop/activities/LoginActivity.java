@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("firebase", user.password + " : " + password);
                     preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                     preferenceManager.putString(Constants.KEY_NAME, login);
-                    Database.getInstance().setCurrentUserId(user.id);
+                    //Database.getInstance().setCurrentUserId(user.id);
                     preferenceManager.putInteger(Constants.KEY_USER_ID,user.id);
                     //preferenceManager.putString(Constants.KEY_USER_ID, String.valueOf(user.id));
                     Intent intent = new Intent(getApplicationContext(), CatalogActivity.class);

@@ -54,6 +54,8 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         //binding.productsRecyclerView.setAdapter(productsAdapterr);
         productsAdapter = new ProductsAdapter();
         binding.productsRecyclerView.setAdapter(productsAdapter);
+        binding.productsRecyclerView.getAdapter().notifyDataSetChanged();
+
     }
 
     private void setListeners() {
