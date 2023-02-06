@@ -1,4 +1,4 @@
-package com.example.giftshop;
+package com.example.giftshop.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
