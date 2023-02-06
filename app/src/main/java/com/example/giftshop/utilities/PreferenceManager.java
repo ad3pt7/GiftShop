@@ -17,6 +17,13 @@ public class PreferenceManager {
         editor.apply();
     }
 
+    public void putInteger(String key,Integer value){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key,value);
+        editor.apply();
+    }
+    public Integer getInteger(String key){return sharedPreferences.getInt(key,1);}
+
     public Boolean getBoolean(String key) {
         return sharedPreferences.getBoolean(key, false);
     }
@@ -26,6 +33,8 @@ public class PreferenceManager {
         editor.putString(key, value);
         editor.apply();
     }
+
+
 
     public String getString(String key) {
         return sharedPreferences.getString(key, null);

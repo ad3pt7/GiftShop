@@ -35,7 +35,9 @@ public class ProductsAdapterr  extends  RecyclerView.Adapter<ProductsAdapterr.Pr
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-    holder.setProductData(products.get(position));
+        final Boolean[] isLiked = {false};
+
+        holder.setProductData(products.get(position));
     }
 
     @Override
@@ -60,7 +62,10 @@ public class ProductsAdapterr  extends  RecyclerView.Adapter<ProductsAdapterr.Pr
         }
     }
 
-    void onLikeClicked() {}
+    void onLikeClicked()
+    {
+
+    }
 
 
 

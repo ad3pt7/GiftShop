@@ -9,11 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.giftshop.R;
+import com.example.giftshop.adapters.ProductsAdapter;
 import com.example.giftshop.listeners.LikeListener;
 import com.example.giftshop.adapters.ProductsAdapterr;
 import com.example.giftshop.databinding.ActivityCatalogBinding;
 import com.example.giftshop.models.Product;
 import com.example.giftshop.utilities.Constants;
+import com.example.giftshop.utilities.Database;
 import com.example.giftshop.utilities.PreferenceManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,12 +25,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     private ActivityCatalogBinding binding;
     private PreferenceManager preferenceManager;
-    private ProductsAdapterr productsAdapterr;
+    //private ProductsAdapterr productsAdapterr;
+    private ProductsAdapter productsAdapter;
     private ArrayList<Product> products;
 
     @Override
@@ -44,8 +50,10 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     private void init() {
         products = new ArrayList<>();
-        productsAdapterr = new ProductsAdapterr(products, this);
-        binding.productsRecyclerView.setAdapter(productsAdapterr);
+        //productsAdapterr = new ProductsAdapterr(products,this);
+        //binding.productsRecyclerView.setAdapter(productsAdapterr);
+        productsAdapter = new ProductsAdapter();
+        binding.productsRecyclerView.setAdapter(productsAdapter);
     }
 
     private void setListeners() {
@@ -67,7 +75,10 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                     Product product = valueRes.getValue(Product.class);
                     products.add(product);
                 }
-                productsAdapterr.notifyDataSetChanged();
+                //productsAdapterr.notifyDataSetChanged();
+                productsAdapter.notifyDataSetChanged();
+                Collections.sort(products);
+                productsAdapter.setProducts(products);
                 binding.productsRecyclerView.smoothScrollToPosition(0);
                 binding.productsRecyclerView.setVisibility(View.VISIBLE);
                 binding.progressBar.setVisibility(View.GONE);
@@ -96,6 +107,6 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     @Override
     public void onLikeClicked(View view, Product product) {
-
+        //Log.d("firebase", String.valueOf(product.id));
     }
 }

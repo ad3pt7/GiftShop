@@ -1,5 +1,8 @@
 package com.example.giftshop.adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +16,29 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.giftshop.R;
+import com.example.giftshop.activities.CatalogActivity;
 import com.example.giftshop.models.Product;
+import com.example.giftshop.models.ProductsLikes;
+import com.example.giftshop.utilities.Constants;
+import com.example.giftshop.utilities.Database;
+import com.example.giftshop.utilities.PreferenceManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
 
+    Context mContext;
 
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().
+            getReference().child("productsLikes");
+    private int id;
     private ArrayList<Product> products = new ArrayList<>();
     private onLikeClickListener onClickListener;
     public interface onLikeClickListener{
@@ -54,6 +73,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position)
     {
+        SharedPreferences preferences =holder.itemView.getContext().
+                getSharedPreferences("giftShopPreference",Context.MODE_PRIVATE);
+        id = preferences.getInt("userId",1);
         Product product = products.get(position);
         final Boolean[] isLiked = {false};
         holder.name.setText(product.name);
@@ -61,18 +83,35 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.productPhoto.setImageDrawable(ContextCompat.getDrawable(
                 holder.productPhoto.getContext(),R.drawable.iphone14));
         holder.likes.setText(String.valueOf(product.likes));
+
+        for(ProductsLikes like : Database.getInstance().getProductsLikes())
+        {
+            if(like.userId == preferences.getInt("userId",1) && like.productId == product.id)
+            {
+                isLiked[0] = true;
+                product.likeName = like.name;
+            }
+        }
+        if(isLiked[0]){
+            holder.liked.setColorFilter(R.color.red);
+        }else{
+            holder.liked.clearColorFilter();
+        }
+
         holder.liked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isLiked[0]){
                     holder.liked.setColorFilter(R.color.red);
-                    Log.d("firebase","liked");
+                    onProductLike(product);
+                    //Log.d("firebase","liked");
                 }else{
                     holder.liked.clearColorFilter();
-                    Log.d("firebase","disliked");
+                    onProductDislike(product);
+                    //Log.d("firebase","disliked");
                 }
                 isLiked[0] = !isLiked[0];
-                Log.d("firebase", String.valueOf(isLiked[0]));
+                //Log.d("firebase", String.valueOf(isLiked[0]));
             }
         });
 
@@ -99,6 +138,35 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             liked = itemView.findViewById(R.id.imageLike);
 
         }
+    }
+
+    public void onProductLike(Product product)
+    {
+        DatabaseReference ref = FirebaseDatabase.getInstance().
+                getReference().child("productsLikes");
+        String uniqueID = UUID.randomUUID().toString();
+        ProductsLikes like = new ProductsLikes(uniqueID,product.id,id);
+        ref.child(uniqueID).setValue(like);
+        product.likeName = uniqueID;
+
+    }
+
+    public void onProductDislike(Product product)
+    {
+        DatabaseReference ref = FirebaseDatabase.getInstance().
+                getReference().child("productsLikes");
+        ref.child(product.likeName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Log.d("firebase",product.likeName);
     }
 }
 

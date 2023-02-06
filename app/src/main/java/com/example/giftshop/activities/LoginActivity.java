@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.giftshop.databinding.ActivityLoginBinding;
+import com.example.giftshop.models.Product;
+import com.example.giftshop.models.ProductsLikes;
 import com.example.giftshop.models.User;
 import com.example.giftshop.utilities.Constants;
+import com.example.giftshop.utilities.Database;
 import com.example.giftshop.utilities.PreferenceManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,14 +23,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private PreferenceManager preferenceManager;
+    private ArrayList<ProductsLikes> productsLikes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        productsLikes = new ArrayList<>();
+        fetchRequests();
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
             Intent intent = new Intent(getApplicationContext(), CatalogActivity.class);
@@ -47,6 +56,32 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchRequests()
+    {
+        Database.getInstance().setProductsLikes(new ArrayList<>());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("productsLikes");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot valueRes: snapshot.getChildren())
+                {
+                    ProductsLikes like = valueRes.getValue(ProductsLikes.class);
+                    productsLikes.add(like);
+                    Database.getInstance().addProductLike(like);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //Log.d("firebase", String.valueOf(productsLikes.size()));
+        Log.d("firebase","start");
+        //Database.getInstance().setProductsLikes(productsLikes);
+        Log.d("firebase","end");
+    }
+
     private void signIn() {
         loading(true);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
@@ -60,10 +95,12 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("firebase", user.password + " : " + password);
                     preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                     preferenceManager.putString(Constants.KEY_NAME, login);
+                    Database.getInstance().setCurrentUserId(user.id);
+                    preferenceManager.putInteger(Constants.KEY_USER_ID,user.id);
+                    //preferenceManager.putString(Constants.KEY_USER_ID, String.valueOf(user.id));
                     Intent intent = new Intent(getApplicationContext(), CatalogActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                    Log.d("firebase", "test2");
                 } else {
                     loading(false);
                     showToast("Unable to sign in");

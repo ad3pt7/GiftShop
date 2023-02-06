@@ -1,7 +1,7 @@
 package com.example.giftshop.models;
 
 public class User {
-
+    public int id;
     public String login;
     public String password;
 
@@ -9,7 +9,7 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String username, String email) {
+    public User(int id,String username, String email) {
         this.login = username;
         this.password = email;
     }
